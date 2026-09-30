@@ -20,13 +20,19 @@ frontend (Next.js :3000)  --POST /agent/execute {message, thread_id}-->  backend
 
 ## Como subir
 
-Pré-requisitos: Python 3.12+ com [uv](https://docs.astral.sh/uv/), Node 20+, e um **Redis 8 com RediSearch**
-(o checkpointer oficial `langgraph-checkpoint-redis` cria índices `FT.*`). Opções:
+Pré-requisitos: Python 3.12+ com [uv](https://docs.astral.sh/uv/), Node 20+, Docker.
 
-- `docker run -p 6379:6379 redis:8` (Redis 8 open source já traz o Query Engine), ou
-- Redis instalado do repositório oficial (`packages.redis.io`), ou
-- sem sudo/docker: o script `~/.local/opt/redis/run-redis.sh` desta máquina roda o `.deb` oficial extraído
-  localmente com `--loadmodule redisearch.so` (é o que uso no dev).
+```bash
+docker compose up -d            # Redis 8 em :6379 + Redis Insight (GUI) em http://localhost:5540
+```
+
+O checkpointer oficial `langgraph-checkpoint-redis` cria índices `FT.*`, então precisa de **Redis 8** (ou
+Redis Stack): o Redis 7 e o pacote `redis-server` do apt do Ubuntu não servem. No Redis Insight, adicione a
+conexão `redis://localhost:6379` (do container, o host é `host.docker.internal` ou o IP da máquina; na
+maioria dos Linux, `172.17.0.1`) e veja as chaves `checkpoint:*` nascendo e expirando.
+
+Sem Docker: o `.deb` oficial de `packages.redis.io` extraído com `dpkg -x` roda com
+`redis-server --loadmodule redisearch.so --loadmodule rejson.so` (foi assim que testei antes do Docker).
 
 ```bash
 cp .env.example .env            # preencha OPENAI_API_KEY e LANGSMITH_API_KEY
