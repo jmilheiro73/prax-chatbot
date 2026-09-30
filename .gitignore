@@ -1,0 +1,21 @@
+# segredos (P1 · AC-09, D3 · AC-05)
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+backend/data/
+
+# node / next
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# so
+.DS_Store
