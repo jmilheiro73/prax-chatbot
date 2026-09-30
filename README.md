@@ -79,6 +79,13 @@ Projeto = `LANGSMITH_PROJECT`. Cada requisição vira um run raiz **`praxis-chat
 Ou seja: abra o run `praxis-chatbot` da 2ª mensagem, veja `summarize_conversation` (o prompt que gerou o
 summary) e logo abaixo o `ChatOpenAI` do nó `model` (o system prompt com o summary injetado).
 
+**Trace de evidência (rodado em 2026-09-30 com `gpt-4o-mini`, TTL 60 s, limite 10 tokens):**
+https://smith.langchain.com/o/74c83959-6ac0-4446-a102-306ccb254e2f/projects/p/a769325f-4073-456b-a9f9-654de42ced04/r/01a0f3b3-2694-76c2-a22d-dfd70c12dab8?trace_id=01a0f3b3-2694-76c2-a22d-dfd70c12dab8
+
+É o run da 2ª mensagem ("Qual é o meu nome e o que eu estou montando?"): dentro dele, `compact → summarize_conversation`
+gera o summary a partir da 1ª troca, e `model → ChatOpenAI` recebe o system prompt com o bloco
+`<conversation_summary>`. O run seguinte, depois do TTL expirar, responde "Você mora em Curitiba" só com o summary.
+
 ## Decisões (o que o PDF deixa em aberto)
 
 - **Onde o summary vive:** tabela `session(thread_id, summary, compactions, …)` em SQLite
