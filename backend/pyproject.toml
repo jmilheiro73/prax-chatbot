@@ -1,0 +1,33 @@
+[project]
+name = "praxis-chatbot"
+version = "0.1.0"
+description = "Praxis · P1 (chatbot scaffold) + D3 (checkpoint Redis, sumarização, LangSmith)"
+authors = [
+    { name = "Juan", email = "softwaregx@gulloxavier.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "fastapi>=0.142.2",
+    "langchain-core>=1.6.6",
+    "langchain-openai>=1.6.7",
+    "langgraph>=1.2.12",
+    "langgraph-checkpoint-redis>=0.5.2",
+    "pydantic-settings>=2.15.0",
+    "tiktoken>=0.14.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.uv]
+package = false
