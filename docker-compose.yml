@@ -1,0 +1,31 @@
+# Infra local do desafio.
+#   docker compose up -d        -> Redis 8 (:6379) + Redis Insight (http://localhost:5540)
+#   docker compose down         -> para tudo (os dados do Redis somem; é checkpoint, expira mesmo)
+#
+# Redis 8 já traz o Query Engine (RediSearch) que o `langgraph-checkpoint-redis` exige.
+services:
+  redis:
+    image: redis:8
+    container_name: praxis-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: praxis-redisinsight
+    ports:
+      - "5540:5540"
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - redisinsight-data:/data
+
+volumes:
+  redisinsight-data:
