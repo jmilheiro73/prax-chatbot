@@ -30,7 +30,7 @@ class FakeChatModel(BaseChatModel):
 
     @property
     def _llm_type(self) -> str:
-        return "fake-praxis"
+        return "fake-prax"
 
     def bind_tools(self, tools: Sequence[BaseTool | dict[str, Any]], **kwargs: Any):  # type: ignore[override]
         return self  # as tools são fixas nesta fake

@@ -7,7 +7,7 @@ LangSmith (D3 · AC-04).
 
 from __future__ import annotations
 
-SYSTEM_PROMPT = """Você é um assistente de chat da mentoria Praxis. Responda em português, de forma direta.
+SYSTEM_PROMPT = """Você é um assistente de chat da mentoria Prax. Responda em português, de forma direta.
 Você tem uma ferramenta de clima; use-a sempre que o usuário perguntar sobre o tempo em uma cidade
 e responda com a temperatura e a condição retornadas (não invente valores)."""
 
