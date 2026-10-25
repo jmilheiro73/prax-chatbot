@@ -12,7 +12,7 @@ from app.settings import load_settings
 
 def create_app() -> FastAPI:
     settings = load_settings()
-    app = FastAPI(title="praxis-chatbot", lifespan=lifespan)
+    app = FastAPI(title="prax-chatbot", lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,

@@ -6,7 +6,7 @@ import { applyEvent, type AssistantTurn, type Block, type Turn } from "@/lib/red
 import { readSse } from "@/lib/sse";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-const THREAD_KEY = "praxis-chatbot:thread_id";
+const THREAD_KEY = "prax-chatbot:thread_id";
 
 function newThreadId() {
   return crypto.randomUUID();
@@ -100,7 +100,7 @@ export default function Page() {
   return (
     <main>
       <header>
-        <h1>Praxis Chatbot</h1>
+        <h1>Prax Chatbot</h1>
         <span className="thread">thread {threadId.slice(0, 8)} <button onClick={resetThread}>nova conversa</button></span>
       </header>
       {summary && <div className="summary"><strong>summary injetado no system prompt:</strong>{"\n"}{summary}</div>}

@@ -11,7 +11,7 @@
 ## Ambiente local
 
 - Redis 8 roda via Docker e precisa estar no ar antes do `./dev.sh`: `docker compose up -d`.
-- Redis Insight em http://localhost:5540. Na conexão, o host é `praxis-redis` (não `127.0.0.1`).
+- Redis Insight em http://localhost:5540. Na conexão, o host é `prax-redis` (não `127.0.0.1`).
 - O `.env` fica na raiz e não vai para o git. Na máquina nova, copie de `.env.example` e preencha as chaves.
 
 ## Onde o estudo parou

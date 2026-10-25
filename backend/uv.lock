@@ -886,7 +886,7 @@ wheels = [
 ]
 
 [[package]]
-name = "praxis-chatbot"
+name = "prax-chatbot"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

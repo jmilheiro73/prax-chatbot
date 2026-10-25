@@ -34,7 +34,7 @@ from app.agent.tokens import count_tokens, message_text
 from app.memory.summary_store import SummaryStore
 
 SUMMARIZER_TAG = "summarizer"  # o runner filtra estes eventos do stream do front
-GRAPH_NAME = "praxis-chatbot"
+GRAPH_NAME = "prax-chatbot"
 
 
 class AgentState(TypedDict):

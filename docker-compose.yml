@@ -6,7 +6,7 @@
 services:
   redis:
     image: redis:8
-    container_name: praxis-redis
+    container_name: prax-redis
     ports:
       - "6379:6379"
     command: ["redis-server", "--save", "", "--appendonly", "no"]
@@ -18,7 +18,7 @@ services:
 
   redisinsight:
     image: redis/redisinsight:latest
-    container_name: praxis-redisinsight
+    container_name: prax-redisinsight
     ports:
       - "5540:5540"
     depends_on:

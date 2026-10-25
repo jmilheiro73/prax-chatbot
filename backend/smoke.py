@@ -75,7 +75,7 @@ async def d3() -> None:
         snap = await snapshot(c, thread)
         assert not snap["checkpoint_alive"], "AC-02: checkpoint deveria ter expirado"
         await ask(c, "Lembra onde eu moro?", thread)                          # só o summary responde
-        print("\nOK · D3 — confira o trace no LangSmith: run 'summarize_conversation' e o system prompt do 'praxis-chatbot' seguinte")
+        print("\nOK · D3 — confira o trace no LangSmith: run 'summarize_conversation' e o system prompt do 'prax-chatbot' seguinte")
 
 
 if __name__ == "__main__":
