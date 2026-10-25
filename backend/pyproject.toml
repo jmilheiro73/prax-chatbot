@@ -1,7 +1,7 @@
 [project]
-name = "praxis-chatbot"
+name = "prax-chatbot"
 version = "0.1.0"
-description = "Praxis · P1 (chatbot scaffold) + D3 (checkpoint Redis, sumarização, LangSmith)"
+description = "Prax · P1 (chatbot scaffold) + D3 (checkpoint Redis, sumarização, LangSmith)"
 authors = [
     { name = "Juan", email = "softwaregx@gulloxavier.com" }
 ]

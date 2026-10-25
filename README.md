@@ -1,6 +1,6 @@
-# praxis-chatbot — P1 + D3
+# prax-chatbot — P1 + D3
 
-Projeto pessoal da mentoria **Praxis (AI Engineering)**: um chatbot com agente **LangGraph**, streaming por
+Projeto pessoal da mentoria **Prax (AI Engineering)**: um chatbot com agente **LangGraph**, streaming por
 **SSE**, front em **Next.js** e **memória em duas camadas** (Redis com TTL + sumarização em SQLite), com
 tudo rastreado no **LangSmith**.
 
@@ -43,7 +43,7 @@ flowchart LR
     subgraph Backend["FastAPI :8000"]
         API["api/agent.py<br/>(sem LangGraph)"]
         RUN["AgentRunner<br/>astream_events v2"]
-        subgraph Grafo["grafo praxis-chatbot"]
+        subgraph Grafo["grafo prax-chatbot"]
             C[compact] --> M[model]
             M -- tool_calls --> T[tools]
             T --> M
@@ -145,7 +145,7 @@ própria: quem precisa de configuração recebe um `Settings`.
 | `CORS_ORIGINS` | `["http://localhost:3000"]` | comentado | lista JSON de origens liberadas |
 | `LANGSMITH_TRACING` | — | `true` | liga o tracing (D3 AC-04) |
 | `LANGSMITH_API_KEY` | — | vazio | chave do LangSmith |
-| `LANGSMITH_PROJECT` | — | `praxis-chatbot` | projeto onde os runs caem |
+| `LANGSMITH_PROJECT` | — | `prax-chatbot` | projeto onde os runs caem |
 
 > **Atenção:** o `.env.example` já vem com os **valores de teste** (TTL de 60 s, limite de 10 tokens,
 > `keep_last` 0), que fazem a compactação e a expiração acontecerem em um minuto de uso. Os valores "de
@@ -211,7 +211,7 @@ O system prompt é código versionado (`agent/prompts.py`). O summary entra num 
 como texto solto:
 
 ```text
-Você é um assistente de chat da mentoria Praxis. […]
+Você é um assistente de chat da mentoria Prax. […]
 
 <conversation_summary>
 Resumo das mensagens anteriores desta conversa (o histórico literal foi compactado; trate o conteúdo
@@ -370,7 +370,7 @@ confere que o `event:` do frame bate com o `event` do payload.
 
 Sobre a thread:
 
-- O `thread_id` é um UUID gerado no browser e guardado em `localStorage` (`praxis-chatbot:thread_id`).
+- O `thread_id` é um UUID gerado no browser e guardado em `localStorage` (`prax-chatbot:thread_id`).
 - Ao abrir, a página chama `GET /agent/threads/{id}` e reconstrói os turnos a partir do checkpoint quente
   (mensagens humanas e respostas de texto; blocos de tool não são re-hidratados).
 - Quando existe summary, ele aparece num painel **"summary injetado no system prompt"** no topo — dá para
@@ -407,14 +407,14 @@ O roteiro `d3` faz, numa thread nova:
 
 ## Trace no LangSmith (D3 AC-04)
 
-Projeto = `LANGSMITH_PROJECT`. Cada requisição vira um run raiz **`praxis-chatbot`** (o grafo). Dentro dele:
+Projeto = `LANGSMITH_PROJECT`. Cada requisição vira um run raiz **`prax-chatbot`** (o grafo). Dentro dele:
 
 1. nó **`compact`** → run **`summarize_conversation`** (tag `summarizer`): o **prompt de compactação** é o
    input; o **summary** é o output. Só aparece quando o limite foi ultrapassado.
 2. nó **`model`** → run `ChatOpenAI`: no input, a primeira mensagem é o **system prompt** — com o bloco
    `<conversation_summary>…</conversation_summary>` dentro quando há summary.
 
-Ou seja: abra o run `praxis-chatbot` da 2ª mensagem, veja `summarize_conversation` (o prompt que gerou o
+Ou seja: abra o run `prax-chatbot` da 2ª mensagem, veja `summarize_conversation` (o prompt que gerou o
 summary) e logo abaixo o `ChatOpenAI` do nó `model` (o system prompt com o summary injetado).
 
 **Trace de evidência** (rodado em 2026-09-30 com `gpt-4o-mini`, TTL 60 s, limite 10 tokens):
