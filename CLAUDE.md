@@ -15,7 +15,7 @@
 - Redis Insight em http://localhost:5540. Na conexão, o host é `prax-redis` (não `127.0.0.1`).
 - O `.env` fica na raiz e não vai para o git. Na máquina nova, copie de `.env.example` e preencha as chaves.
 
-## Estado do repo (2026-10-25)
+## Estado do repo (2026-10-26)
 
 - GitHub: `jmilheiro73/prax-chatbot`, público. O nome antigo era `praxis-chatbot`.
 - Branch de trabalho: `main`. A `docs/readme` está desatualizada e já foi toda para a `main`.
@@ -25,8 +25,14 @@
 - O `postcss` é forçado para `^8.5.23` pelo `overrides` do `frontend/package.json`, porque o `next` 15 fixa a 8.4.31,
   que tem falhas. Subir para o `next` 16 é mudança grande; não faça sem planejar.
 - No GitHub estão ligados: Secret Protection, Push protection, Dependabot alerts e Dependabot security updates.
+- Pendente: a branch `dependabot/uv/backend/opentelemetry-api-1.45.1` (1.45.0 → 1.45.1) ainda não entrou na `main`.
 
-## Ao chegar em outra máquina
+## Memória do Claude
+
+- A memória do Claude (`~/.claude/projects/.../memory/`) não sincroniza entre as máquinas.
+  O que a outra máquina precisa saber vai neste arquivo ou em `docs/`, com commit e push na `main`.
+
+## Ao chegar em outra máquina (que já tinha o projeto)
 
 - `git status` antes de tudo. Se tiver mudança ou commit não enviado, o `git pull` pode dar conflito
   por causa da troca de "praxis" para "prax".
@@ -39,6 +45,18 @@
 - No Redis Insight, edite a conexão salva para o host `prax-redis`.
 - No `.env`, troque `LANGSMITH_PROJECT` para `prax-chatbot` se quiser os runs no projeto novo.
 
+## Máquina nova (clone do zero)
+
+- Precisa de Docker (com o plugin compose), `uv` e `node` 22.
+- `cp .env.example .env`: cria o `.env`. Preencha `OPENAI_API_KEY` e `LANGSMITH_API_KEY`.
+- `cd backend && uv sync`: cria o `.venv` com as dependências Python.
+- `cd frontend && npm install`: instala as dependências do front.
+- `docker compose up -d`: sobe Redis e Redis Insight.
+- `./dev.sh`: sobe a API (:8000) e o front (:3000).
+
 ## Onde o estudo parou
 
-Ver `docs/estudo-fluxo.md`.
+- Notas em `docs/estudo-fluxo.md`.
+- Próximo: `ExecuteRequest` (o que o Pydantic valida no JSON e o que acontece quando falha).
+  Depois, `Depends(get_runner)`.
+- 2026-10-25 e 2026-10-26: sem estudo. Foram renomeação, segurança e sincronização entre máquinas.
