@@ -15,7 +15,7 @@
 - Redis Insight em http://localhost:5540. Na conexão, o host é `prax-redis` (não `127.0.0.1`).
 - O `.env` fica na raiz e não vai para o git. Na máquina nova, copie de `.env.example` e preencha as chaves.
 
-## Estado do repo (2026-10-26)
+## Estado do repo (2026-10-27)
 
 - GitHub: `jmilheiro73/prax-chatbot`, público. O nome antigo era `praxis-chatbot`.
 - Branch de trabalho: `main`. A `docs/readme` está desatualizada e já foi toda para a `main`.
@@ -25,7 +25,8 @@
 - O `postcss` é forçado para `^8.5.23` pelo `overrides` do `frontend/package.json`, porque o `next` 15 fixa a 8.4.31,
   que tem falhas. Subir para o `next` 16 é mudança grande; não faça sem planejar.
 - No GitHub estão ligados: Secret Protection, Push protection, Dependabot alerts e Dependabot security updates.
-- Pendente: a branch `dependabot/uv/backend/opentelemetry-api-1.45.1` (1.45.0 → 1.45.1) ainda não entrou na `main`.
+- A `main` já tem o `opentelemetry-api` 1.45.1 (commit `4af7acf`). A branch remota
+  `dependabot/uv/backend/opentelemetry-api-1.45.1` sobrou e pode ser apagada (ainda não foi, falta o Juan autorizar).
 
 ## Memória do Claude
 
@@ -57,6 +58,9 @@
 ## Onde o estudo parou
 
 - Notas em `docs/estudo-fluxo.md`.
-- Próximo: `ExecuteRequest` (o que o Pydantic valida no JSON e o que acontece quando falha).
-  Depois, `Depends(get_runner)`.
 - 2026-10-25 e 2026-10-26: sem estudo. Foram renomeação, segurança e sincronização entre máquinas.
+- 2026-10-27: `ExecuteRequest`, `Depends(get_runner)`, injeção de dependência vs. global, `lifespan`,
+  `Settings` (como lê o `.env`, variável faltando, `alias`).
+- Próximo: `backend/app/agent/runner.py` (`runner.stream` e `snapshot`).
+- A conferir: se os runs aparecem no LangSmith. O `.env` não vai para o `os.environ`, então o SDK
+  pode não ver o `LANGSMITH_*` (detalhes em "A conferir" no `docs/estudo-fluxo.md`).
