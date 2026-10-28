@@ -1,6 +1,6 @@
 # Estudo do fluxo do backend
 
-Anotações de estudo de 2026-10-20.
+Anotações de estudo de 2026-10-20 e 2026-10-27.
 
 ## Subida do servidor (roda uma vez)
 
@@ -48,7 +48,48 @@ Anotações de estudo de 2026-10-20.
 | Tool | `backend/app/agent/tools/weather.py` |
 | Front | `frontend/app/page.tsx` e `frontend/lib/` |
 
+## Rota, dependência e config (2026-10-27)
+
+### `ExecuteRequest` (`backend/app/api/agent.py`)
+
+- `message` é obrigatório, tem que ser string e não pode ser vazio (`min_length=1`).
+- Número não vira string: `{"message": 123}` falha.
+- `thread_id` é opcional (string ou `null`). Se não vier, o `execute` gera um `uuid4`.
+- Campo a mais no JSON é ignorado.
+- Se falhar, o FastAPI responde 422 com a lista de erros e nem chama o `execute`.
+
+### `Depends(get_runner)`
+
+- O FastAPI chama `get_runner(request)` antes do `execute` e passa o resultado no parâmetro `runner`.
+- `get_runner` lê `request.app.state.resources.runner`, que o `lifespan` guardou na subida.
+- Por que não variável global: o runner só existe depois do `lifespan` (precisa abrir Redis e SQLite),
+  e o teste troca o runner sem Redis nem OpenAI (`make_app` em `tests/test_api.py`).
+
+### `lifespan` (`backend/app/boot.py`)
+
+- Função com um `yield` no meio.
+- Antes do `yield`: roda uma vez na subida (`boot()` abre SQLite, Redis, LLM e runner).
+- Depois do `yield`: roda no desligamento e fecha as conexões.
+
+### `Settings` (`backend/app/settings.py`)
+
+- O `BaseSettings` procura cada campo nas variáveis de ambiente e no `.env` da raiz (`ROOT_ENV`).
+- Ordem: variável do terminal > `.env` > `default` do campo.
+- Converte o tipo: `CHECKPOINT_TTL_SECONDS=60` vira `int`. Texto não numérico dá erro.
+- Variável que falta: se o campo tem `default`, usa o default. Se não tem (`OPENAI_API_KEY`), dá
+  `Field required` em `load_settings()`, dentro do `create_app()`, e a API nem sobe.
+- `OPENAI_API_KEY=` vazio passa no `Settings`, mas o `ChatOpenAI` falha no `boot()` ("Missing credentials").
+- `alias` é o nome de fora: no código é `settings.openai_api_key`, no `.env` é `OPENAI_API_KEY`.
+  O alias não é a variável. É o nome que o Pydantic procura.
+- `extra="ignore"`: variável no `.env` sem campo no `Settings` é ignorada.
+
+### A conferir
+
+- O `Settings` lê o `.env`, mas não joga os valores no `os.environ`. O `./dev.sh` também não.
+  Então o SDK do LangSmith pode não ver o `LANGSMITH_*` do `.env`. Teste: rodar o `./dev.sh`,
+  mandar uma mensagem e ver se o run aparece no LangSmith.
+- O README ("Problemas comuns") diz que chave vazia dá erro de validação. Não dá: o erro é no `boot()`.
+
 ## Próximo passo
 
-- Entender o JSON do `ExecuteRequest`: o que o Pydantic valida e o que acontece quando falha.
-- Depois, o `Depends(get_runner)`: como o runner chega até a função `execute`.
+- `backend/app/agent/runner.py`: o que o `runner.stream` faz com o `astream_events` e o que o `snapshot` devolve.
