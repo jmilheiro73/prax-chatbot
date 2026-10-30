@@ -92,3 +92,11 @@ Anotações de estudo de 2026-10-20 e 2026-10-27.
 ## Próximo passo
 
 - `backend/app/agent/runner.py`: o que o `runner.stream` faz com o `astream_events` e o que o `snapshot` devolve.
+
+## O que mudou no fluxo desde estas notas (2026-10-30)
+
+- Grafo: entrou o nó `recall` entre `compact` e `model`. Ele traz as memórias relevantes para o turno.
+- `runner.stream`: abre o turno no transcript, o `_persist` grava só os eventos terminais e, no fim, título e memória
+  rodam em segundo plano. Turno cancelado não dispara essa etapa.
+- `runner.snapshot`: agora devolve também o `transcript`, o histórico durável que hidrata a tela.
+- `boot()`: abre também o banco durável, os índices vetoriais, a memória e o RAG.
