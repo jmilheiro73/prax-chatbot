@@ -46,7 +46,7 @@ Anotações de estudo de 2026-10-20 e 2026-10-27.
 | Grafo, estado e gatilho do resumo | `backend/app/agent/graph.py` |
 | System prompt com o resumo | `backend/app/agent/prompts.py` |
 | Tool | `backend/app/agent/tools/weather.py` |
-| Front | `frontend/app/page.tsx` e `frontend/lib/` |
+| Front | `frontend/app/page.tsx`, `frontend/components/` e `frontend/lib/` |
 
 ## Rota, dependência e config (2026-10-27)
 
@@ -85,9 +85,8 @@ Anotações de estudo de 2026-10-20 e 2026-10-27.
 
 ### A conferir
 
-- O `Settings` lê o `.env`, mas não joga os valores no `os.environ`. O `./dev.sh` também não.
-  Então o SDK do LangSmith pode não ver o `LANGSMITH_*` do `.env`. Teste: rodar o `./dev.sh`,
-  mandar uma mensagem e ver se o run aparece no LangSmith.
+- O `Settings` lê o `.env`, mas não joga os valores no `os.environ`. O `lifespan` agora copia o `LANGSMITH_*`
+  (`settings.export_tracing_env()`). Teste: rodar o `./dev.sh`, mandar uma mensagem e ver se o run aparece no LangSmith.
 - O README ("Problemas comuns") diz que chave vazia dá erro de validação. Não dá: o erro é no `boot()`.
 
 ## Próximo passo

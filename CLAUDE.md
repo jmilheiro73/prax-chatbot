@@ -25,6 +25,14 @@
 - O `postcss` é forçado para `^8.5.23` pelo `overrides` do `frontend/package.json`, porque o `next` 15 fixa a 8.4.31,
   que tem falhas. Subir para o `next` 16 é mudança grande; não faça sem planejar.
 - No GitHub estão ligados: Secret Protection, Push protection, Dependabot alerts e Dependabot security updates.
+- O front segue o visual do ChatGPT, mas com fundo preto no tema escuro, a pedido do Juan (2026-10-30).
+  Não ponha botão que o back não suporta.
+- Com `CHECKPOINT_TTL_SECONDS=60` (valor de teste do `.env`), o agente esquece a conversa em 1 minuto. A tela continua
+  mostrando, porque vem do transcript durável, e avisa.
+- Em 2026-10-30 entraram: transcript durável, memória de longo prazo, RAG, subagente, MCP e evals. O mapa de cada aula para
+  o código, e do que ficou de fora, está em `docs/mapa-aulas.md`.
+- A tool de clima continua stub: sempre 22°C. Trocar por clima real quebra o AC-03 e o AC-08; o Juan ainda não decidiu.
+- A live da Semana 10 (Grokbot) não tinha transcrição em 30/10. Quando sair, conferir se muda algo em `agent/subagents.py`.
 - A `main` já tem o `opentelemetry-api` 1.45.1 (commit `4af7acf`). A branch remota
   `dependabot/uv/backend/opentelemetry-api-1.45.1` sobrou e pode ser apagada (ainda não foi, falta o Juan autorizar).
 
@@ -62,5 +70,5 @@
 - 2026-10-27: `ExecuteRequest`, `Depends(get_runner)`, injeção de dependência vs. global, `lifespan`,
   `Settings` (como lê o `.env`, variável faltando, `alias`).
 - Próximo: `backend/app/agent/runner.py` (`runner.stream` e `snapshot`).
-- A conferir: se os runs aparecem no LangSmith. O `.env` não vai para o `os.environ`, então o SDK
-  pode não ver o `LANGSMITH_*` (detalhes em "A conferir" no `docs/estudo-fluxo.md`).
+- A conferir: se os runs aparecem no LangSmith. O `lifespan` agora copia o `LANGSMITH_*` para o `os.environ`
+  (`settings.export_tracing_env()`), mas falta ver um run chegar de verdade.
