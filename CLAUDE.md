@@ -15,7 +15,7 @@
 - Redis Insight em http://localhost:5540. Na conexão, o host é `prax-redis` (não `127.0.0.1`).
 - O `.env` fica na raiz e não vai para o git. Na máquina nova, copie de `.env.example` e preencha as chaves.
 
-## Estado do repo (2026-10-27)
+## Estado do repo (2026-10-30)
 
 - GitHub: `jmilheiro73/prax-chatbot`, público. O nome antigo era `praxis-chatbot`.
 - Branch de trabalho: `main`. A `docs/readme` está desatualizada e já foi toda para a `main`.
@@ -26,7 +26,7 @@
   que tem falhas. Subir para o `next` 16 é mudança grande; não faça sem planejar.
 - No GitHub estão ligados: Secret Protection, Push protection, Dependabot alerts e Dependabot security updates.
 - O front segue o visual do ChatGPT, mas com fundo preto no tema escuro, a pedido do Juan (2026-10-30).
-  Não ponha botão que o back não suporta.
+  Não ponha botão que o back não suporta. A marca é só o texto "Prax", sem símbolo (ele testou várias versões e não quis).
 - Com `CHECKPOINT_TTL_SECONDS=60` (valor de teste do `.env`), o agente esquece a conversa em 1 minuto. A tela continua
   mostrando, porque vem do transcript durável, e avisa.
 - Em 2026-10-30 entraram: transcript durável, memória de longo prazo, RAG, subagente, MCP e evals. O mapa de cada aula para
@@ -36,10 +36,20 @@
 - A `main` já tem o `opentelemetry-api` 1.45.1 (commit `4af7acf`). A branch remota
   `dependabot/uv/backend/opentelemetry-api-1.45.1` sobrou e pode ser apagada (ainda não foi, falta o Juan autorizar).
 
+## Limitações conhecidas (2026-10-30)
+
+- Resposta cortada pelo botão parar some ao recarregar: o transcript só grava evento terminal.
+- Depois de parar, o modelo pode responder à pergunta pendente no turno seguinte.
+- Com documento na base, o agente também busca em perguntas gerais.
+- O cliente MCP nunca foi testado contra um servidor externo real.
+- O que ficou parcial por aula (HTTP/2, PDF, OAuth no MCP) está em `docs/mapa-aulas.md`.
+
 ## Memória do Claude
 
 - A memória do Claude (`~/.claude/projects/.../memory/`) não sincroniza entre as máquinas.
   O que a outra máquina precisa saber vai neste arquivo ou em `docs/`, com commit e push na `main`.
+- A memória deste projeto viaja no repo privado `praxis-ai-engineering`, pelo `memoria-assistente/sincronizar.sh`:
+  `salvar` antes do push ao sair, `restaurar` depois do `git pull` ao chegar.
 
 ## Ao chegar em outra máquina (que já tinha o projeto)
 
@@ -48,11 +58,13 @@
 - `git remote set-url origin https://github.com/jmilheiro73/prax-chatbot.git`: aponta o git para o nome novo.
 - `git checkout main && git pull`: baixa tudo.
 - `cd frontend && npm install`: instala o `next` e o `postcss` novos.
-- `cd backend && uv sync`: instala o `certifi` e o `opentelemetry-api` novos no `.venv`.
+- `cd backend && uv sync`: instala as dependências novas no `.venv` (`redisvl`, `numpy`, `httpx`).
 - `docker rm -f praxis-redis praxis-redisinsight`: apaga os containers com o nome antigo, se existirem.
   Depois, `docker compose up -d`.
 - No Redis Insight, edite a conexão salva para o host `prax-redis`.
 - No `.env`, troque `LANGSMITH_PROJECT` para `prax-chatbot` se quiser os runs no projeto novo.
+  As variáveis novas (RAG, memória, MCP) têm default: o `.env` antigo continua valendo.
+- `backend/data/` e o Redis não vão para o git: conversas, memórias e documentos começam vazios na outra máquina.
 
 ## Máquina nova (clone do zero)
 
@@ -69,6 +81,7 @@
 - 2026-10-25 e 2026-10-26: sem estudo. Foram renomeação, segurança e sincronização entre máquinas.
 - 2026-10-27: `ExecuteRequest`, `Depends(get_runner)`, injeção de dependência vs. global, `lifespan`,
   `Settings` (como lê o `.env`, variável faltando, `alias`).
+- 2026-10-30: sem estudo. Foi desenvolvimento, e o fluxo mudou: o resumo está no fim de `docs/estudo-fluxo.md`.
 - Próximo: `backend/app/agent/runner.py` (`runner.stream` e `snapshot`).
 - A conferir: se os runs aparecem no LangSmith. O `lifespan` agora copia o `LANGSMITH_*` para o `os.environ`
   (`settings.export_tracing_env()`), mas falta ver um run chegar de verdade.
