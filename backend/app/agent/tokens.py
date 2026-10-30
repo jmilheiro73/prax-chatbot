@@ -14,8 +14,12 @@ from langchain_core.messages import BaseMessage
 
 
 @lru_cache(maxsize=1)
-def _encoding() -> tiktoken.Encoding:
+def encoding() -> tiktoken.Encoding:
     return tiktoken.get_encoding("o200k_base")
+
+
+def count_text_tokens(text: str) -> int:
+    return len(encoding().encode(text))
 
 
 def message_text(msg: BaseMessage) -> str:
@@ -35,5 +39,4 @@ def message_text(msg: BaseMessage) -> str:
 
 
 def count_tokens(messages: Iterable[BaseMessage]) -> int:
-    enc = _encoding()
-    return sum(len(enc.encode(message_text(m))) for m in messages)
+    return sum(count_text_tokens(message_text(m)) for m in messages)
