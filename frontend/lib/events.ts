@@ -30,6 +30,8 @@ export interface SerializedMessage {
   tool_calls?: ToolCall[];
   tool_call_id?: string;
   name?: string;
+  status?: string; // no ToolMessage: "success" ou "error"
+  usage_metadata?: { total_tokens?: number } | null;
 }
 
 export interface StreamEvent {
