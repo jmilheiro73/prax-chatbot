@@ -332,8 +332,7 @@ As buscas dele não entram no histórico do orquestrador nem na tela. Multiagent
 
 ### MCP
 
-- **Server** (`api/mcp.py`): JSON-RPC escrito à mão, só leitura, com as tools `list_documents` e `search_documents`. Só existe com `MCP_SERVER_TOKEN`. Para conectar:
-  `claude mcp add --transport http prax http://localhost:8000/mcp --header "Authorization: Bearer <token>"`
+- **Server** (`api/mcp.py`): JSON-RPC escrito à mão, só leitura, com as tools `list_documents` e `search_documents`. Só existe com `MCP_SERVER_TOKEN`. Qualquer cliente MCP conecta em `http://localhost:8000/mcp` (transporte HTTP) com o header `Authorization: Bearer <token>`.
 - **Client** (`agent/tools/mcp_client.py`): `MCP_SERVERS` conecta no boot, faz `tools/list` uma vez e filtra por glob. Vem desligado.
 
 ### Parar a resposta

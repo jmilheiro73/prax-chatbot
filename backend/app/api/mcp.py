@@ -1,4 +1,4 @@
-"""MCP server (Live 09): a base de conhecimento exposta para Claude Code, Cursor e afins.
+"""MCP server (Live 09): a base de conhecimento exposta para qualquer cliente MCP (editores de código e agentes).
 
 É JSON-RPC 2.0 por POST, escrito à mão para o protocolo ficar à vista. Só leitura.
 - A tool é `name` + `description` + `inputSchema`, e a description é o que faz o modelo chamar.

@@ -27,7 +27,7 @@ Critério: entra o que resolve um problema real deste chat. O próprio curso ped
 | 16 | Progressive disclosure, runtime context | Tools pequenas e `<runtime_context>` no system prompt | `agent/tools/knowledge.py`, `agent/prompts.py` |
 | 17 | Eval offline, evaluators, Recall@K, LLM-as-a-judge | Dataset por cenário, comparação com a última run | `backend/evals/` |
 | 17 | Eval online, annotation queue | 👍/👎 por resposta; 👎 vira item de dataset | `POST .../feedback`, `evals/export_feedback.py` |
-| 18 | MCP server (JSON-RPC, `tools/list`, token próprio) | Base de conhecimento exposta a Claude Code e Cursor | `api/mcp.py` |
+| 18 | MCP server (JSON-RPC, `tools/list`, token próprio) | Base de conhecimento exposta a clientes MCP | `api/mcp.py` |
 | 18 | MCP client, `tools/list` cacheado, filtro por glob | Tools de servidores externos, desligado por padrão | `agent/tools/mcp_client.py` |
 | 19 | Subagente: `done` + resumo, prompt, tools e modelo próprios | Pesquisa delegada que não polui o contexto do orquestrador | `agent/subagents.py` |
 
